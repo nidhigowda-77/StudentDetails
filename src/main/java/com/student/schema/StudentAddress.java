@@ -9,25 +9,25 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class StudentAddress {
 
 	@Id
-	private Integer id;
-
+	private Integer rollNo;
+	
 	private String state;
+	
 	private String place;
 
-	public Integer getId() {
-		return id;
+
+	public Integer getRoll() {
+		return rollNo;
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
-		}
-
-	public void setState(String state) {
-		this.state = state;
+	public void setRoll(Integer rollNo) {
+		this.rollNo = rollNo;
 	}
 
 	public String getState() {
 		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 	public String getPlace() {
 		return place;
@@ -39,12 +39,12 @@ public class StudentAddress {
 
 	@Override
 	public String toString() {
-		return "StudentAddress [id=" + id + ", state=" + state + ", place=" + place + "]";
+		return "StudentAddress [rollNo=" + rollNo + ", state=" + state + ", place=" + place + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, place, state);
+		return Objects.hash(place, rollNo, state);
 	}
 
 	@Override
@@ -56,7 +56,9 @@ public class StudentAddress {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentAddress other = (StudentAddress) obj;
-		return Objects.equals(id, other.id) && Objects.equals(place, other.place) && Objects.equals(state, other.state);
+		return Objects.equals(place, other.place) && Objects.equals(rollNo, other.rollNo)
+				&& Objects.equals(state, other.state);
 	}
+
 
 }

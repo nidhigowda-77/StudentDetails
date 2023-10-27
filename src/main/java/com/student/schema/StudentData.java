@@ -2,26 +2,26 @@ package com.student.schema;
 
 import java.util.Objects;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "StudentData")
 public class StudentData {
-
-	private Integer id;
 	
 	private String name;
 
+	@Id
 	private Integer rollNo;
 	
+	private String course;
+	
 	private String branch;
-	@Override
-	public String toString() {
-		return "StudentSchema [id=" + id + ", name=" + name + ", rollNo=" + rollNo + ", branch=" + branch + "]";
-	}
+	
+	private Integer year;
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(branch, id, name, rollNo);
+		return Objects.hash(branch, course, name, rollNo, year);
 	}
 
 	@Override
@@ -33,16 +33,15 @@ public class StudentData {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentData other = (StudentData) obj;
-		return Objects.equals(branch, other.branch) && Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(rollNo, other.rollNo);
+		return Objects.equals(branch, other.branch) && Objects.equals(course, other.course)
+				&& Objects.equals(name, other.name) && Objects.equals(rollNo, other.rollNo)
+				&& Objects.equals(year, other.year);
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return "StudentData [name=" + name + ", rollNo=" + rollNo + ", course=" + course + ", branch=" + branch
+				+ ", year=" + year + "]";
 	}
 
 	public String getName() {
@@ -61,6 +60,14 @@ public class StudentData {
 		this.rollNo = rollNo;
 	}
 
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
 	public String getBranch() {
 		return branch;
 	}
@@ -69,17 +76,14 @@ public class StudentData {
 		this.branch = branch;
 	}
 
-	public StudentData(Integer id, String name, Integer rollNo, String branch) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.rollNo = rollNo;
-		this.branch = branch;
+	public Integer getYear() {
+		return year;
 	}
 
-	public StudentData() {
-		super();
+	public void setYear(Integer year) {
+		this.year = year;
 	}
-
-
+	
+	
+	
 }

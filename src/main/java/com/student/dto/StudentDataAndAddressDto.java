@@ -7,34 +7,47 @@ import org.springframework.data.annotation.Id;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StudentDataAndAddressDto {
 
-	@Id
-	@JsonProperty("id")
-	private Integer id;
-
 	@JsonProperty("name")
+	@NotBlank
 	private String name;
 
+	@Id
 	@JsonProperty("rollNo")
+	@NotNull
 	private Integer rollNo;
 
 	@JsonProperty("branch")
+	@NotBlank
 	private String branch;
 
+	@JsonProperty("course")
+	@NotBlank
+	private String course;
+	
+	@JsonProperty("year")
+	@NotBlank
+	private Integer year;
+	
 	@JsonProperty("state")
+	@NotBlank
 	private String state;
 
 	@JsonProperty("place")
+	@NotBlank
 	private String place;
+	
+	
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	@Override
+	public String toString() {
+		return "StudentDataAndAddressDto [name=" + name + ", rollNo=" + rollNo + ", branch=" + branch + ", state="
+				+ state + ", place=" + place + ", course=" + course + ", year=" + year + "]";
 	}
 
 	public String getName() {
@@ -77,9 +90,25 @@ public class StudentDataAndAddressDto {
 		this.place = place;
 	}
 
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public Integer getYear() {
+		return year;
+	}
+
+	public void setYear(Integer year) {
+		this.year = year;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(branch, id, name, place, rollNo, state);
+		return Objects.hash(branch, course, name, place, rollNo, state, year);
 	}
 
 	@Override
@@ -91,15 +120,12 @@ public class StudentDataAndAddressDto {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentDataAndAddressDto other = (StudentDataAndAddressDto) obj;
-		return Objects.equals(branch, other.branch) && Objects.equals(id, other.id) && Objects.equals(name, other.name)
-				&& Objects.equals(place, other.place) && Objects.equals(rollNo, other.rollNo)
-				&& Objects.equals(state, other.state);
+		return Objects.equals(branch, other.branch) && Objects.equals(course, other.course)
+				&& Objects.equals(name, other.name) && Objects.equals(place, other.place)
+				&& Objects.equals(rollNo, other.rollNo) && Objects.equals(state, other.state)
+				&& Objects.equals(year, other.year);
 	}
+	
 
-	@Override
-	public String toString() {
-		return "StudentDataAndAddressDto [id=" + id + ", name=" + name + ", rollNo=" + rollNo + ", branch=" + branch
-				+ ", state=" + state + ", place=" + place + "]";
-	}
 
 }

@@ -22,7 +22,12 @@ public class StudentService {
 	@Autowired
 	MongoTemplate template;
 
-	public StudentDataAndAddressDto insertStudentDataAndAddress(StudentDataAndAddressDto studentDetails) {
+	/**
+	 * insert data to respective collections
+	 * @param studentDetails
+	 * @return
+	 */
+	public StudentDataAndAddressDto insertStudentDataAndAddress(StudentDataAndAddressDto studentDetails) throws Exception{
 
 		StudentDataAndAddressDto allStudentDetails = new StudentDataAndAddressDto();
 
@@ -30,22 +35,25 @@ public class StudentService {
 			// Create a StudentData object
 			StudentData studentData = new StudentData();
 
-			studentData.setId(studentDetails.getId());
 			studentData.setName(studentDetails.getName());
 			studentData.setBranch(studentDetails.getBranch());
 			studentData.setRollNo(studentDetails.getRollNo());
+			studentData.setYear(studentDetails.getYear());
+			studentData.setCourse(studentDetails.getCourse());
+			
 
 			// Save StudentData to the StudentData collection
-			StudentData insertedData = template.save(studentData);
+			StudentData insertedData = template.insert(studentData);
 
 			// Create a StudentAddress object
 			StudentAddress studentAddress = new StudentAddress();
-			studentAddress.setId(studentDetails.getId());
 			studentAddress.setState(studentDetails.getState());
 			studentAddress.setPlace(studentDetails.getPlace());
+			studentAddress.setRoll(studentDetails.getRollNo());
+
 
 			// Save StudentAddress to the StudentAddress collection
-			StudentAddress studentAddressAddedValue = template.save(studentAddress);
+			StudentAddress studentAddressAddedValue = template.insert(studentAddress);
 
 			ObjectMapper mapper = new ObjectMapper();
 
@@ -56,12 +64,17 @@ public class StudentService {
 		} catch (Exception e) {
 
 			log.error(e.getMessage());
+			throw e;
 		}
 
 		return allStudentDetails;
 	}
 
-	public List<StudentDataAndAddressDto> getAllTheStudentDetails() {
+	/**
+	 * get all the details of all the students
+	 * @return
+	 */
+	public List<StudentDataAndAddressDto> getAllTheStudentDetails() throws Exception {
 
 		List<StudentDataAndAddressDto> finalListOfStudentDetails = new ArrayList<>();
 
@@ -70,15 +83,16 @@ public class StudentService {
 		try {
 
 			List<StudentData> studentDataList = template.findAll(StudentData.class);
+			
 			List<StudentAddress> studentAddressList = template.findAll(StudentAddress.class);
 
-			for (StudentData singleData : studentDataList) {
+			for ( StudentData singleData : studentDataList ) {
 
 				StudentDataAndAddressDto studentAddressandData = new StudentDataAndAddressDto();
 
-				for (StudentAddress singleStudentAddress : studentAddressList) {
+				for ( StudentAddress singleStudentAddress : studentAddressList ) {
 
-					if ( singleData.getId().equals(singleStudentAddress.getId() ) ) {
+					if ( singleData.getRollNo().equals(singleStudentAddress.getRoll() ) ) {
 
 						studentAddressandData = mapper.convertValue(singleData, StudentDataAndAddressDto.class);
 
@@ -91,8 +105,10 @@ public class StudentService {
 				}
 			}
 
-		} catch (Exception e) {
+		} catch ( Exception e ) {
+			
 			log.error(e.getMessage());
+			throw e;
 		}
 
 		return finalListOfStudentDetails;
