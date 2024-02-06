@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class StudentDataAndAddressDto {
@@ -19,7 +18,7 @@ public class StudentDataAndAddressDto {
 
 	@Id
 	@JsonProperty("rollNo")
-	@NotNull
+	@NotBlank
 	private Integer rollNo;
 
 	@JsonProperty("branch")
@@ -41,8 +40,6 @@ public class StudentDataAndAddressDto {
 	@JsonProperty("place")
 	@NotBlank
 	private String place;
-	
-	
 
 	@Override
 	public String toString() {

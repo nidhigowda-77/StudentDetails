@@ -21,6 +21,51 @@ public class StudentService {
 
 	@Autowired
 	MongoTemplate template;
+	 
+	
+	/**
+	 * get all the details of all the students
+	 * @return
+	 */
+	public List<StudentDataAndAddressDto> getAllTheStudentDetails() throws Exception {
+
+		List<StudentDataAndAddressDto> finalListOfStudentDetails = new ArrayList<>();
+
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+
+			List<StudentData> studentDataList = template.findAll(StudentData.class);
+			
+			List<StudentAddress> studentAddressList = template.findAll(StudentAddress.class);
+
+			for ( StudentData singleData : studentDataList ) {
+
+				StudentDataAndAddressDto studentAddressandData = new StudentDataAndAddressDto();
+
+				for ( StudentAddress singleStudentAddress : studentAddressList ) {
+
+					if ( singleData.getRollNo().equals(singleStudentAddress.getRoll() ) ) {
+
+						studentAddressandData = mapper.convertValue(singleData, StudentDataAndAddressDto.class);
+
+						studentAddressandData.setState(singleStudentAddress.getState());
+						studentAddressandData.setPlace(singleStudentAddress.getPlace());
+
+						finalListOfStudentDetails.add(studentAddressandData);
+
+					}
+				}
+			}
+
+		} catch ( Exception e ) {
+			
+			log.error(e.getMessage());
+			throw e;
+		}
+
+		return finalListOfStudentDetails;
+	}
 
 	/**
 	 * insert data to respective collections
@@ -70,47 +115,5 @@ public class StudentService {
 		return allStudentDetails;
 	}
 
-	/**
-	 * get all the details of all the students
-	 * @return
-	 */
-	public List<StudentDataAndAddressDto> getAllTheStudentDetails() throws Exception {
-
-		List<StudentDataAndAddressDto> finalListOfStudentDetails = new ArrayList<>();
-
-		ObjectMapper mapper = new ObjectMapper();
-
-		try {
-
-			List<StudentData> studentDataList = template.findAll(StudentData.class);
-			
-			List<StudentAddress> studentAddressList = template.findAll(StudentAddress.class);
-
-			for ( StudentData singleData : studentDataList ) {
-
-				StudentDataAndAddressDto studentAddressandData = new StudentDataAndAddressDto();
-
-				for ( StudentAddress singleStudentAddress : studentAddressList ) {
-
-					if ( singleData.getRollNo().equals(singleStudentAddress.getRoll() ) ) {
-
-						studentAddressandData = mapper.convertValue(singleData, StudentDataAndAddressDto.class);
-
-						studentAddressandData.setState(singleStudentAddress.getState());
-						studentAddressandData.setPlace(singleStudentAddress.getPlace());
-
-						finalListOfStudentDetails.add(studentAddressandData);
-
-					}
-				}
-			}
-
-		} catch ( Exception e ) {
-			
-			log.error(e.getMessage());
-			throw e;
-		}
-
-		return finalListOfStudentDetails;
-	}
+	
 }

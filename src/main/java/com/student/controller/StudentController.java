@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.CollectionUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +31,7 @@ public class StudentController {
      * @return ResponseEntity with a list of student details or an error response
      */
     @GetMapping
+    @Cacheable(value = "cache")
     public ResponseEntity<?> getAllDetails() {
     	
         try {
@@ -58,7 +59,7 @@ public class StudentController {
     
     /**
      * Insert student details into the respective collections
-     * @param studentData The student data to inser
+     * @param studentData The student data to insert
      * @return ResponseEntity with the result or an error response
      */
     @PostMapping
@@ -66,14 +67,13 @@ public class StudentController {
     	
     	StudentDataAndAddressDto result = new StudentDataAndAddressDto();
     	
-    	boolean allFieldsNullOrEmpty = Stream.of(studentData.getCourse(), studentData.getYear(),studentData.getRollNo(), studentData.getState(),studentData.getBranch(),studentData.getName(), studentData.getPlace())
-    		    .anyMatch(field -> field == null || (field instanceof String && ((String) field).isEmpty()));
-    	System.out.println(studentData.getName());
+	    	boolean allFieldsNullOrEmpty = Stream.of(studentData.getCourse(), studentData.getYear(),studentData.getRollNo(), studentData.getState(),studentData.getBranch(),studentData.getName(), studentData.getPlace())
+	    		    .anyMatch(field -> field == null || (field instanceof String && ((String) field).isEmpty()));
         try {
         	
         	 if ( allFieldsNullOrEmpty ) {
         		 
-            	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Enter required fields ");
+            	 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(" Enter required fields ");
             } else {
             	
             	 result = studentService.insertStudentDataAndAddress( studentData );
