@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.student.dto.StudentDataAndAddressDto;
+import com.student.feign.FeignConfigs;
 import com.student.service.StudentService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,6 +24,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping(value = "/student")
 public class StudentController {
 
+	@Autowired
+	FeignConfigs feign;
+	
     @Autowired
     StudentService studentService;
 
@@ -86,5 +90,12 @@ public class StudentController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
         }
+        
+        
+        
+    }
+    @GetMapping("/name")
+    public String feign() {
+    	return feign.getUser();
     }
 }
